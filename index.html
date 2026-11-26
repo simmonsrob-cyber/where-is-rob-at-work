@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Where Is Rob At Work? · v1</title>
+  <meta name="description" content="Live dashboard showing where Rob is during his Delta work trips.">
+  <meta name="theme-color" content="#0A192F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Where's Rob?">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" id="touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ZONE 1 · status -->
+    <header class="zone1 card">
+      <div class="title-block">
+        <h1>Where Is Rob At Work?</h1>
+        <div class="badge-row">
+          <span id="status-badge" class="badge" data-tone="home">Loading…</span>
+          <span id="reach-chip" class="chip" hidden></span>
+          <span id="pairing-chip" class="chip ghost" hidden></span>
+        </div>
+      </div>
+      <p id="summary" class="summary">Checking Rob's schedule…</p>
+      <div class="clocks">
+        <div class="clock">
+          <span class="clock-label">Charleston</span>
+          <span id="clock-home" class="clock-time">--:--</span>
+          <span id="clock-home-date" class="clock-sub"></span>
+        </div>
+        <div class="clock">
+          <span id="clock-rob-label" class="clock-label">Rob</span>
+          <span id="clock-rob" class="clock-time">--:--</span>
+          <span id="clock-rob-sub" class="clock-sub"></span>
+        </div>
+        <div class="sync" id="sync">
+          <span class="dot" id="sync-dot"></span>
+          <span id="sync-text">Connecting…</span>
+        </div>
+      </div>
+    </header>
+
+    <div id="banner" class="banner" hidden></div>
+
+    <!-- ZONE 2 · animation + telemetry -->
+    <main class="zone2">
+      <section class="stage card" aria-label="Live animation of what Rob is doing">
+        <canvas id="stage-canvas"></canvas>
+        <div id="radio" class="radio" hidden></div>
+        <div id="bubble" class="bubble" hidden></div>
+        <div id="stage-caption" class="stage-caption"></div>
+      </section>
+      <section class="telemetry" aria-label="Flight and location details">
+        <div class="tile wide"><span class="t-label">Progress</span><span class="t-value" id="t-progress">—</span>
+          <div class="bar"><div id="t-progress-bar"></div></div><span class="t-sub" id="t-progress-sub"></span></div>
+        <div class="tile"><span class="t-label">Altitude</span><span class="t-value" id="t-alt">—</span><span class="t-sub" id="t-alt-sub"></span></div>
+        <div class="tile"><span class="t-label">Groundspeed</span><span class="t-value" id="t-gs">—</span><span class="t-sub" id="t-gs-sub"></span></div>
+        <div class="tile"><span class="t-label">Aircraft</span><span class="t-value" id="t-ac">—</span><span class="t-sub" id="t-ac-sub"></span></div>
+        <div class="tile"><span class="t-label">Location</span><span class="t-value" id="t-loc">—</span><span class="t-sub" id="t-loc-sub"></span></div>
+        <div class="tile"><span class="t-label">Weather</span><span class="t-value" id="t-wx">—</span><span class="t-sub" id="t-wx-sub"></span></div>
+        <div class="tile"><span class="t-label">Hotel</span><span class="t-value small" id="t-hotel">—</span><span class="t-sub" id="t-hotel-sub"></span></div>
+        <div class="tile"><span class="t-label">Leave hotel</span><span class="t-value" id="t-leave">—</span><span class="t-sub" id="t-leave-sub"></span></div>
+        <div class="tile"><span class="t-label">Gate · Ramp</span><span class="t-value" id="t-gate">—</span><span class="t-sub" id="t-gate-sub"></span></div>
+      </section>
+    </main>
+
+    <!-- ZONE 3 · itinerary / tomorrow / what's next -->
+    <section class="zone3">
+      <div class="card panel">
+        <h2 id="today-title">Today's Schedule</h2>
+        <ol id="today-list" class="itin"></ol>
+      </div>
+      <div class="card panel">
+        <h2>Tomorrow</h2>
+        <div id="tomorrow"></div>
+      </div>
+      <div class="card panel">
+        <h2>What's Next</h2>
+        <div id="next"></div>
+      </div>
+    </section>
+
+    <!-- Bottom bar -->
+    <footer class="bottom-bar">
+      <button id="test-btn" class="btn btn-test" type="button">Test Preview (Sped-Up)</button>
+      <div class="bar-mid">
+        <button id="chatter-mute" class="btn btn-ghost" type="button" title="Mute / unmute chatter">🔊 Chatter</button>
+        <button id="chatter-say" class="btn btn-ghost" type="button" title="Say something now">📻 Radio</button>
+      </div>
+      <div class="bar-right">
+        <span id="updated" class="updated">—</span>
+        <span class="version" id="version-badge">v1</span>
+        <button id="settings-btn" class="btn btn-ghost" type="button" aria-label="Settings">⚙︎</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Settings drawer -->
+  <aside id="settings" class="drawer" aria-hidden="true">
+    <div class="drawer-inner">
+      <div class="drawer-head"><h2>Settings</h2><button id="settings-close" class="btn btn-ghost" type="button" aria-label="Close">✕</button></div>
+      <label class="field">
+        <span>Tracker Worker URL</span>
+        <input id="worker-url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://rob-flight-tracker-worker.<you>.workers.dev">
+      </label>
+      <p class="hint">Saved in this browser only. Leave blank to use the URL in <code>js/config.js</code>.</p>
+      <div class="row">
+        <button id="worker-save" class="btn btn-primary" type="button">Save &amp; connect</button>
+        <button id="worker-test" class="btn" type="button">Test</button>
+        <button id="worker-reset" class="btn btn-ghost" type="button">Use default</button>
+      </div>
+      <p id="worker-result" class="hint"></p>
+      <label class="toggle"><input id="wake-toggle" type="checkbox"> <span>Keep screen awake</span></label>
+      <label class="toggle"><input id="mute-toggle" type="checkbox"> <span>Mute chatter &amp; radio</span></label>
+      <div id="diag" class="diag"></div>
+    </div>
+  </aside>
+
+  <script src="js/config.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/chatter.js"></script>
+  <script src="js/animation.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
