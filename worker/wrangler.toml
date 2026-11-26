@@ -1,0 +1,16 @@
+# Where Is Rob At Work? — Cloudflare Worker (free tier)
+# Deploy:   cd worker && npx wrangler deploy
+# Secret:   npx wrangler secret put CALENDAR_WEBCAL_URL   (paste the webcal:// iCloud link)
+name = "rob-flight-tracker-worker"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
+
+# Keeps the last good schedule so the dashboard still works if iCloud is unreachable.
+[[kv_namespaces]]
+binding = "SCHEDULE_KV"
+id = "2ded286678924b0a8634ea05aeaae9b5"
+
+[observability]
+enabled = true
