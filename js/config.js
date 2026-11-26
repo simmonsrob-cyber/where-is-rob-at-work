@@ -1,7 +1,7 @@
 /* Where Is Rob At Work? — configuration (v1)
  * WORKER_URL can also be pasted live in the ⚙ Settings drawer (saved in this browser's localStorage). */
 window.ROB_CONFIG = {
-  VERSION: 'v1',
+  VERSION: 'v2',
   WORKER_URL: 'https://rob-flight-tracker-worker.simmons-rob.workers.dev',
 
   HOME_TIMEZONE: 'America/New_York',
