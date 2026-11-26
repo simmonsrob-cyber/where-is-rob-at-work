@@ -1,0 +1,14 @@
+{
+  "name": "Where Is Rob At Work?",
+  "short_name": "Where's Rob?",
+  "description": "Live dashboard showing where Rob is during his Delta work trips.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0A192F",
+  "theme_color": "#0A192F",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
