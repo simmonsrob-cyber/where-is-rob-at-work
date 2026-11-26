@@ -37,6 +37,7 @@ button { font: inherit; }
   gap: var(--gap);
   padding: calc(var(--gap) + env(safe-area-inset-top)) calc(var(--gap) + env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) calc(var(--gap) + env(safe-area-inset-left));
 }
+.zone1 { grid-row: 1; } #banner { grid-row: 2; } .zone2 { grid-row: 3; } .zone3 { grid-row: 4; } .bottom-bar { grid-row: 5; }
 .card {
   background: var(--card);
   border: 1px solid var(--line);
